@@ -3,3 +3,4 @@ version: 1.0.0
 main: me.calebbassham.timebomb.TimeBombPlugin
 author: Caleb Bassham
 depend: [ScenarioManager]
+api-version: 1.13
