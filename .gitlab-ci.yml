@@ -1,0 +1,13 @@
+image: gradle:alpine
+
+stages:
+ - jar
+
+jar:
+  stage: jar
+  script:
+    - ./gradlew build
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - build/libs/*.jar
