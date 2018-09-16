@@ -1,11 +1,14 @@
 package me.calebbassham.timebomb
 
+import me.calebbassham.scenariomanager.ScenarioManagerUtils
 import me.calebbassham.scenariomanager.api.Scenario
 import me.calebbassham.scenariomanager.api.ScenarioEvent
 import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.block.BlockFace
 import org.bukkit.block.Chest
+import org.bukkit.entity.ArmorStand
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -20,6 +23,8 @@ class TimeBomb(plugin: JavaPlugin): Scenario("TimeBomb", plugin), Listener {
     fun onPlayerDeath(e: PlayerDeathEvent) {
         val drops = e.drops.filter { it != null }.filter { it.type != Material.AIR }.toTypedArray()
         e.drops.clear()
+
+        if(drops.isEmpty()) return
 
         val chest1 = e.entity.location.block
         chest1.type = Material.CHEST
@@ -52,9 +57,32 @@ class TimeBomb(plugin: JavaPlugin): Scenario("TimeBomb", plugin), Listener {
 
         chest.inventory.contents = drops
 
+        val standLocation = if (drops.size > 27) {
+            // middle of double chest
+            chest1.location.add(1.0, 0.75, 0.5)
+        } else {
+            // above single chest
+            chest1.location.add(0.5, 0.75, 0.5)
+        }
+
+        val stand = chest1.world.spawn(standLocation, ArmorStand::class.java).apply {
+            isCustomNameVisible = true
+            isSmall = true
+            setGravity(false)
+            isVisible = false
+            isMarker = true
+        }
+
         ScenarioManagerPlugin.scenarioManager?.eventScheduler?.scheduleEvent(object : ScenarioEvent("${e.entity.displayName} explodes", true) {
             override fun run() {
                 chest1.world.createExplosion(chest1.location, 4f)
+                chest1.world.strikeLightning(standLocation)
+                stand.remove()
+            }
+
+            override fun onTick(ticksRemaining: Long) {
+                if (ticksRemaining % 20 != 0L) return
+                stand.customName = ChatColor.DARK_RED.toString() + ScenarioManagerUtils.formatTicks(ticksRemaining)
             }
         }, 20 * 30)
     }
