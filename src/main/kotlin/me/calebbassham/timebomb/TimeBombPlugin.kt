@@ -1,12 +1,15 @@
 package me.calebbassham.timebomb
 
-import me.calebbassham.scenariomanager.plugin.ScenarioManagerPlugin
+import me.calebbassham.scenariomanager.api.scenarioManager
 import org.bukkit.plugin.java.JavaPlugin
 
 class TimeBombPlugin : JavaPlugin() {
 
     override fun onEnable() {
-        ScenarioManagerPlugin.scenarioManager?.registerScenario(TimeBomb(this))
+        scenarioManager?.let {
+            it.registerScenario(TimeBomb(this, it))
+        }
+
     }
 
 }
