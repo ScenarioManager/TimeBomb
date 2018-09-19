@@ -3,7 +3,6 @@ package me.calebbassham.timebomb
 import me.calebbassham.scenariomanager.ScenarioManagerUtils
 import me.calebbassham.scenariomanager.api.Scenario
 import me.calebbassham.scenariomanager.api.ScenarioEvent
-import me.calebbassham.scenariomanager.api.ScenarioManager
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.block.BlockFace
@@ -13,9 +12,8 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
-import org.bukkit.plugin.java.JavaPlugin
 
-class TimeBomb(plugin: JavaPlugin, private val sm: ScenarioManager) : Scenario("TimeBomb", plugin), Listener {
+class TimeBomb : Scenario("TimeBomb"), Listener {
 
     override val description = "When a player dies, their items will be added to a chest that explodes in 30 seconds."
 
@@ -24,8 +22,8 @@ class TimeBomb(plugin: JavaPlugin, private val sm: ScenarioManager) : Scenario("
         val player = e.entity
         val world = player.world
 
-        if (!sm.isGamePlayer(player))
-        if (!sm.isGameWorld(world)) return
+        if (!scenarioManager.isGamePlayer(player))
+        if (!scenarioManager.isGameWorld(world)) return
 
         val drops = e.drops.filter { it != null }.filter { it.type != Material.AIR }.toTypedArray()
         e.drops.clear()
@@ -76,7 +74,7 @@ class TimeBomb(plugin: JavaPlugin, private val sm: ScenarioManager) : Scenario("
             isMarker = true
         }
 
-        sm.eventScheduler.scheduleEvent(object : ScenarioEvent("${player.displayName} explodes", true) {
+        scheduleEvent(object : ScenarioEvent("${player.displayName} explodes", true) {
             override fun run() {
                 chest1.world.createExplosion(chest1.location, 4f)
                 chest1.world.strikeLightning(standLocation)
