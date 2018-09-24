@@ -22,8 +22,8 @@ class TimeBomb : Scenario("TimeBomb"), Listener {
         val player = e.entity
         val world = player.world
 
-        if (!scenarioManager.isGamePlayer(player))
-        if (!scenarioManager.isGameWorld(world)) return
+        if (!scenarioManager.gamePlayerProvider.isGamePlayer(player))
+        if (!scenarioManager.gameWorldProvider.isGameWorld(world)) return
 
         val drops = e.drops.filter { it != null }.filter { it.type != Material.AIR }.toTypedArray()
         e.drops.clear()
