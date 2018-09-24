@@ -1,10 +1,10 @@
 image: gradle:alpine
 
 stages:
- - jar
+ - package
 
-jar:
-  stage: jar
+package:
+  stage: package
   script:
     - ./gradlew build
   artifacts:
