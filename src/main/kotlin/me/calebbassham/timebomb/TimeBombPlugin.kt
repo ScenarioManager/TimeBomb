@@ -6,7 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin
 class TimeBombPlugin : JavaPlugin() {
 
     override fun onEnable() {
-        scenarioManager?.registerScenario(TimeBomb(), this)
+        scenarioManager.register(TimeBomb(), this)
 
     }
 

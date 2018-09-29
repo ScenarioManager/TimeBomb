@@ -1,8 +1,8 @@
 package me.calebbassham.timebomb
 
 import me.calebbassham.scenariomanager.ScenarioManagerUtils
-import me.calebbassham.scenariomanager.api.Scenario
-import me.calebbassham.scenariomanager.api.ScenarioEvent
+import me.calebbassham.scenariomanager.api.SimpleScenario
+import me.calebbassham.scenariomanager.api.events.ScenarioEvent
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.block.BlockFace
@@ -13,9 +13,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 
-class TimeBomb : Scenario("TimeBomb"), Listener {
-
-    override val description = "When a player dies, their items will be added to a chest that explodes in 30 seconds."
+class TimeBomb : SimpleScenario(), Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST) // Any drops added in other death events will be added to chest
     fun onPlayerDeath(e: PlayerDeathEvent) {

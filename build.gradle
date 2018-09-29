@@ -28,9 +28,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     compileOnly "org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT"
-    compileOnly("me.calebbassham:ScenarioManager:0.4.0") {
-        transitive = false
-    }
+    compileOnly "me.calebbassham:ScenarioManager:0.5.0"
 }
 
 compileKotlin {

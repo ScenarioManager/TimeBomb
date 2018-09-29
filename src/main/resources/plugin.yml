@@ -1,6 +1,7 @@
 name: TimeBomb
+description: "When a player dies, their items will be added to a chest that explodes in 30 seconds."
+author: Caleb Bassham
 version: 1.0.0
 main: me.calebbassham.timebomb.TimeBombPlugin
-author: Caleb Bassham
 depend: [ScenarioManager]
 api-version: 1.13
